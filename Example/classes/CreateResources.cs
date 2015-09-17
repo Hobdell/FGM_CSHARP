@@ -40,7 +40,7 @@ namespace hscic.gov.uk.fhir.interop.fgm
 
         internal static Organization CreateOrganizationResource()
         {
-            // Create new parameter resource
+            // Create new Organization resource
             Organization res = new Organization();
 
             // Allocate the logical resource Id - this is what the resource is referenced by
@@ -62,27 +62,34 @@ namespace hscic.gov.uk.fhir.interop.fgm
 
         internal static Practitioner CreatePractitionerResource()
         {
+            // Create new Practitioner resource
             Practitioner res = new Practitioner();
 
+            // Allocate the logical resource Id - this is what the resource is referenced by
             res.Id = "41fe704c-18e5-11e5-b60b-1697f925ec7b";
 
+            // Add the profile for this resource (from the FGM DMS)
             Meta metadata = new Meta();
             metadata.Profile = new string[] { "urn:fhir.nhs.uk:profile/NHS-FGM-Practitioner" };
             res.Meta = metadata;
 
+            // Add the business idetifier for the SDS User Id
             res.Identifier = new List<Identifier>();
             Identifier id1 = new Identifier("urn:fhir.nhs.uk/id/SDSUserID", "G12345678");
             id1.Use = Identifier.IdentifierUse.Official;
             res.Identifier.Add(id1);
 
+            // Add the business idetifier for the SDS Role Profile Id
             Identifier id2 = new Identifier("urn:fhir.nhs.uk/id/SDSRoleProfileID", "PT1234");
             id2.Use = Identifier.IdentifierUse.Official;
             res.Identifier.Add(id2);
 
+            // Add the name of the practitioner
             res.Name = HumanName.ForFamily("Wood").WithGiven("Town");
             res.Name.Use = HumanName.NameUse.Official;
             res.Name.Prefix = new String[] { "Dr." };
 
+            // Add details about the practitioner's role
             Practitioner.PractitionerPractitionerRoleComponent pr = new Practitioner.PractitionerPractitionerRoleComponent();
             Coding code = new Coding("urn:fhir.nhs.uk:vs/SDSJobRoleName", "R0090");
             code.Display = "Hospital Practitioner";
@@ -91,7 +98,7 @@ namespace hscic.gov.uk.fhir.interop.fgm
             pr.Role.Coding = new List<Coding>();
             pr.Role.Coding.Add(code);
 
-
+            // Add details about the practitioner's managing organisation
             pr.ManagingOrganization =
                 new ResourceReference()
                 { Reference = "Organization/41fe704c-18e5-11e5-b60b-1697f925ec7b" };
@@ -100,42 +107,34 @@ namespace hscic.gov.uk.fhir.interop.fgm
             return res;
         }
 
-
-
-        //<identifier value = "13daadee-26e1-4d6a-9e6a-7f4af9b58977" />
-        //< timestamp value="2015-07-04T09:10:14+00:00"/>
-        //<event>
-        //<system value="urn:fhir.nhs.uk:vs/MessageEvent"/>
-        //<code value="urn:nhs:names:services:fgmquery/FGMQuery_1_0"/>
-        //</event>
-
-
-
-
-        //</MessageHeader>
-
         internal static MessageHeader CreateMessageHeaderResource()
         {
+            // Create new MessageHeader resource
             MessageHeader res = new MessageHeader();
 
+            // Allocate the logical resource Id - this is what the resource is referenced by
             res.Id = "14daadee-26e1-4d6a-9e6a-7f4af9b58877";
 
+            // Add the profile for this resource (from the FGM DMS) plus a timestamp for when the resource was last updated.
             Meta metadata = new Meta();
             metadata.Profile = new string[] { "urn:fhir.nhs.uk:profile/NHS-FGM-MessageHeader-QueryParameters" };
             metadata.LastUpdated = new DateTimeOffset(2015, 6, 22, 14, 04, 44, new TimeSpan(0));
             res.Meta = metadata;
 
+            // Add the business idetifier for the MessageHeader
             res.Identifier = "13daadee-26e1-4d6a-9e6a-7f4af9b58977";
 
-            // <timestamp value="2015-07-04T09:10:14+00:00"/>
+            // Add a timestamp for the message
             res.Timestamp = new DateTimeOffset(2015, 7, 4, 9, 10, 14, new TimeSpan(0));
 
+            // Add an event code (as per the FGM DMS)
             res.Event = new Coding()
             {
                 System = "urn:fhir.nhs.uk:vs/MessageEvent",
                 Code = "urn:nhs:names:services:fgmquery/FGMQuery_1_0"
             };
 
+            // Add details of the endpoint sending the message
             res.Source = new MessageHeader.MessageSourceComponent()
             {
                 Name = "FooBar NHS Trust",
@@ -148,6 +147,7 @@ namespace hscic.gov.uk.fhir.interop.fgm
                 Endpoint = "urn:system:asid/047192794544"
             };
 
+            // Add details of the endpoint receiving the message (in this case SPINE 2)
             res.Destination = new List<MessageHeader.MessageDestinationComponent>();
             res.Destination.Add(
                 new MessageHeader.MessageDestinationComponent()
@@ -156,12 +156,14 @@ namespace hscic.gov.uk.fhir.interop.fgm
                     Endpoint = "urn:spinecore:asid/990101234567"
                 });
 
+            // Add a reference to a Practitioner resource detailing the message author
             res.Author = new ResourceReference()
             {
                 Reference = "Practitioner/41fe704c-18e5-11e5-b60b-1697f925ec7b",
                 Display = "Dr Town Wood"
             };
 
+            // Add a reference to the resource that constitutes the message payload
             res.Data = new List<ResourceReference>();
             res.Data.Add(new ResourceReference() { Reference = "Parameters/7cb73a48-090d-469a-a2b2-04f1e6b11ea2" });
             return res;
