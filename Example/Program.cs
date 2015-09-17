@@ -27,9 +27,7 @@ namespace hscic.gov.uk.fhir.interop.fgm
             string x4 = FhirSerializer.SerializeResourceToXml(resourceMessageHeader);
 
             // Create the Bundle message as per the DMS
-            //
             // Create the MessageHeader resource
-
             Bundle msg = new Bundle();
 
             // Add a logical id for this resource
