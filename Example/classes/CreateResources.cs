@@ -15,17 +15,21 @@ namespace hscic.gov.uk.fhir.interop.fgm
             // Create new parameter resource
             Parameters res = new Parameters();
 
+            // Allocate the resource Id - this is what the resource is referenced by
             res.Id = "7cb73a48-090d-469a-a2b2-04f1e6b11ea2";
 
+            // Add the profile for this resource (from the FGM DMS)
             Meta metadata = new Meta();
             metadata.Profile = new string[] { "urn:fhir.nhs.uk:profile/NHS-FGM-QueryParameters" };
             res.Meta = metadata;
 
+            // Add the first query parameter, this will always be this value (from the FGM DMS)
             Parameters.ParametersParameterComponent p1 = new Parameters.ParametersParameterComponent();
             p1.Name = "Risk Indicator";
             p1.Value = new FhirString("FGM");
             res.Parameter.Add(p1);
 
+            // Add the second query parameter, the patient's NHS Number (from the FGM DMS)
             Parameters.ParametersParameterComponent p2 = new Parameters.ParametersParameterComponent();
             p2.Name = "NHS Number";
             p2.Value = new FhirString("9999999999");
