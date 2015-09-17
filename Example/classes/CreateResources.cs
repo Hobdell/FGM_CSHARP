@@ -15,7 +15,7 @@ namespace hscic.gov.uk.fhir.interop.fgm
             // Create new parameter resource
             Parameters res = new Parameters();
 
-            // Allocate the resource Id - this is what the resource is referenced by
+            // Allocate the logical resource Id - this is what the resource is referenced by
             res.Id = "7cb73a48-090d-469a-a2b2-04f1e6b11ea2";
 
             // Add the profile for this resource (from the FGM DMS)
@@ -40,18 +40,21 @@ namespace hscic.gov.uk.fhir.interop.fgm
 
         internal static Organization CreateOrganizationResource()
         {
+            // Create new parameter resource
             Organization res = new Organization();
 
+            // Allocate the logical resource Id - this is what the resource is referenced by
             res.Id = "13daadee-26e1-4d6a-9e6a-7f4af9b58878";
 
+            // Add the profile for this resource (from the FGM DMS)
             Meta metadata = new Meta();
             metadata.Profile = new string[] { "urn:fhir.nhs.uk:profile/NHS-FGM-Organization" };
             res.Meta = metadata;
 
+            // Add the business idetifier for the organisation, plus the organisation name
             res.Identifier = new List<Identifier>();
             Identifier id = new Identifier("urn:fhir.nhs.uk/id/ODSOrganisationCode", "RKE");
             res.Identifier.Add(id);
-
             res.Name = "THE WHITTINGTON HOSPITAL NHS TRUST";
 
             return res;
