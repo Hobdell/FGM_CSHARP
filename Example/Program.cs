@@ -4,7 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Example
+using Hl7.Fhir.Model;
+using Hl7.Fhir.Serialization;
+
+namespace hscic.gov.uk.fhir.interop.fgm
 {
     class Program
     {
