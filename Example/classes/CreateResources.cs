@@ -25,13 +25,13 @@ namespace hscic.gov.uk.fhir.interop.fgm
 
             // Add the first query parameter, this will always be this value (from the FGM DMS)
             Parameters.ParametersParameterComponent p1 = new Parameters.ParametersParameterComponent();
-            p1.Name = "Risk Indicator";
+            p1.Name = "RiskIndicator";
             p1.Value = new FhirString("FGM");
             res.Parameter.Add(p1);
 
             // Add the second query parameter, the patient's NHS Number (from the FGM DMS)
             Parameters.ParametersParameterComponent p2 = new Parameters.ParametersParameterComponent();
-            p2.Name = "NHS Number";
+            p2.Name = "NHSNumber";
             p2.Value = new FhirString("9999999999");
             res.Parameter.Add(p2);
 
